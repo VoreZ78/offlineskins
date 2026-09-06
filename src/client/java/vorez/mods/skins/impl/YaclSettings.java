@@ -156,13 +156,15 @@ public final class YaclSettings {
                             1,
                             java.util.concurrent.TimeUnit.SECONDS
                     ).execute(() -> Minecraft.getInstance().execute(() ->
-                            SystemToast.add(
-                                    Minecraft.getInstance().gui.toastManager(),
-                                    SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
-                                    Component.translatable("offlineskins.reload.notification"),
-                                    Component.translatable("toast.offlineskins.reload.success")
-                            ))
-                    );
+                            Minecraft.getInstance().getToastManager().addToast(
+                                    SystemToast.multiline(
+                                            Minecraft.getInstance(),
+                                            SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
+                                            Component.translatable("offlineskins.reload.notification"),
+                                            Component.translatable("toast.offlineskins.reload.success")
+                                    )
+                            )
+                    ));
                 })
                 .build();
 
@@ -745,11 +747,13 @@ public final class YaclSettings {
                                                             "https://github.com/VoreZ78/OfflineSkins-Reloaded/issues"
                                                     );
 
-                                                    SystemToast.add(
-                                                            client.gui.toastManager(),
-                                                            SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
-                                                            Component.translatable("copied.issues.URL"),
-                                                            Component.literal("")
+                                                    client.getToastManager().addToast(
+                                                            SystemToast.multiline(
+                                                                    client,
+                                                                    SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
+                                                                    Component.translatable("copied.issues.URL"),
+                                                                    Component.literal("")
+                                                            )
                                                     );
                                                 })
                                                 .build()

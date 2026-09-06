@@ -84,9 +84,9 @@ public class KeyBindsAndCommands {
             Minecraft client = Minecraft.getInstance();
 
             while (OPEN_CONFIG.consumeClick()) {
-                Screen current = client.gui.screen();
+                Screen current = client.screen;
 
-                client.setScreenAndShow(
+                client.setScreen(
                         YaclSettings.createConfigScreen(current)
                 );
             }
@@ -94,7 +94,7 @@ public class KeyBindsAndCommands {
             if (openConfigNextTick) {
                 openConfigNextTick = false;
 
-                client.setScreenAndShow(
+                client.setScreen(
                         YaclSettings.createConfigScreen(null)
                 );
             }

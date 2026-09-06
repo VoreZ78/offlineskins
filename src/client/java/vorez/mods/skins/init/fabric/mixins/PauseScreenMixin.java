@@ -46,7 +46,7 @@ public abstract class PauseScreenMixin extends Screen {
                 new ConfigButton(
                         x,
                         y,
-                        button -> this.minecraft.setScreenAndShow(
+                        button -> this.minecraft.setScreen(
                                 YaclSettings.createConfigScreen(this)
                         )
                 )
