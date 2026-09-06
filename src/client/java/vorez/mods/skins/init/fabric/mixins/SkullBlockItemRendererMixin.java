@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.special.PlayerHeadSpecialRenderer;
 import net.minecraft.core.ClientAsset;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.PlayerSkin;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ResolvableProfile;
@@ -30,7 +30,7 @@ public abstract class SkullBlockItemRendererMixin {
             return original;
         }
 
-        Identifier loc = FabricOfflineSkinsReloaded.getUnofficialLocationSkin(
+        ResourceLocation loc = FabricOfflineSkinsReloaded.getUnofficialLocationSkin(
                 original.gameProfile()
         );
 
