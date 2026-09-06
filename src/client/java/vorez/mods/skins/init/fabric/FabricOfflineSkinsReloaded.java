@@ -19,7 +19,7 @@ import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -44,14 +44,14 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = Paths.get(".", "config", "offlineskins-reloaded.json");
-    private static final Map<String, Identifier> textures = new ConcurrentHashMap<>();
+    private static final Map<String, ResourceLocation> textures = new ConcurrentHashMap<>();
 
     public static boolean PLAYERHEADS = true;
 
     private static volatile ConfigOptions lastLoadedConfig = new ConfigOptions().defaultOptions();
 
-    private static Identifier generateRandomLocation() {
-        return Identifier.fromNamespaceAndPath("offlineskins-reloaded", String.format("textures/generated/%s", UUID.randomUUID()));
+    private static ResourceLocation generateRandomLocation() {
+        return ResourceLocation.fromNamespaceAndPath("offlineskins-reloaded", String.format("textures/generated/%s", UUID.randomUUID()));
     }
 
     private static String textureKey(ByteBuffer data) {
@@ -69,7 +69,7 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
         }
     }
 
-    public static Identifier getLocationSkin(GameProfile profile) {
+    public static ResourceLocation getLocationSkin(GameProfile profile) {
         ISkin skin = SkinProviderAPI.SKIN.getSkin(PlayerProfile.wrapGameProfile(profile));
         if (skin != null && skin.isDataReady()) {
             ByteBuffer data = skin.getData();
@@ -79,7 +79,7 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
         }
         return null;
     }
-    public static Identifier getLocationCape(GameProfile profile) {
+    public static ResourceLocation getLocationCape(GameProfile profile) {
         ISkin skin = SkinProviderAPI.CAPE.getSkin(PlayerProfile.wrapGameProfile(profile));
         if (skin != null && skin.isDataReady()) {
             ByteBuffer data = skin.getData();
@@ -90,7 +90,7 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
         return null;
     }
 
-    public static Identifier getUnofficialLocationSkin(GameProfile profile) {
+    public static ResourceLocation getUnofficialLocationSkin(GameProfile profile) {
         ISkin skin = SkinProviderAPI.SKIN.getUnofficialSkin(PlayerProfile.wrapGameProfile(profile));
         if (skin != null && skin.isDataReady()) {
             ByteBuffer data = skin.getData();
@@ -101,8 +101,8 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
         return null;
     }
 
-    private static Identifier registerTexture(ByteBuffer data, ISkin skin, String key) throws IOException {
-        Identifier location = generateRandomLocation();
+    private static ResourceLocation registerTexture(ByteBuffer data, ISkin skin, String key) throws IOException {
+        ResourceLocation location = generateRandomLocation();
         ByteBuffer readBuffer = data.asReadOnlyBuffer();
         readBuffer.rewind();
         DynamicTexture texture = new DynamicTexture(location::toString, NativeImage.read(readBuffer));
@@ -124,13 +124,13 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
         return location;
     }
 
-    private static Identifier getOrCreateTexture(ByteBuffer data, ISkin skin) throws IOException {
+    private static ResourceLocation getOrCreateTexture(ByteBuffer data, ISkin skin) throws IOException {
         String key = textureKey(data);
         if (key == null) {
             return null;
         }
 
-        Identifier existing = textures.get(key);
+        ResourceLocation existing = textures.get(key);
         if (existing != null) {
             return existing;
         }
@@ -141,7 +141,7 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
         }
 
         CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<Identifier> result = new AtomicReference<>();
+        AtomicReference<ResourceLocation> result = new AtomicReference<>();
         AtomicReference<IOException> error = new AtomicReference<>();
         client.execute(() -> {
             try {
@@ -165,7 +165,7 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
         return result.get();
     }
 
-    private static Identifier getOrCreateTextureNullable(ByteBuffer data, ISkin skin) {
+    private static ResourceLocation getOrCreateTextureNullable(ByteBuffer data, ISkin skin) {
         try {
             return getOrCreateTexture(data, skin);
         } catch (IOException e) {
@@ -174,7 +174,7 @@ public class FabricOfflineSkinsReloaded implements ClientModInitializer {
     }
 
     public static String getSkinType(GameProfile profile) {
-        Identifier location = getLocationSkin(profile);
+        ResourceLocation location = getLocationSkin(profile);
         if (location != null) {
             ISkin skin = SkinProviderAPI.SKIN.getSkin(PlayerProfile.wrapGameProfile(profile));
             if (skin != null && skin.isDataReady()) {

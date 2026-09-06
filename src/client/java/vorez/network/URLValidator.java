@@ -131,11 +131,13 @@ public final class URLValidator {
                     Component.translatable("toast.offlineskins.invalid_cape");
         };
 
-        SystemToast.add(
-                client.gui.toastManager(),
-                SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
-                Component.literal(title),
-                message
+        client.getToastManager().addToast(
+                net.minecraft.client.gui.components.toasts.SystemToast.multiline(
+                        client,
+                        SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
+                        Component.literal(title),
+                        message
+                )
         );
     }
 }
