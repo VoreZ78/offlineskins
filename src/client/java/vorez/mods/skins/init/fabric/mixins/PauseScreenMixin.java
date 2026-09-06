@@ -2,7 +2,7 @@ package vorez.mods.skins.init.fabric.mixins;
 
 import org.spongepowered.asm.mixin.Unique;
 import vorez.mods.skins.impl.YaclSettings;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -22,14 +22,14 @@ public abstract class PauseScreenMixin extends Screen {
     private static final Identifier BUTTON_TEXTURE =
             Identifier.fromNamespaceAndPath(
                     "offlineskins-reloaded",
-                    "mainTitleScreenButton.png"
+                    "maintitlescreenbutton.png"
             );
 
     @Unique
     private static final Identifier BUTTON_HIGHLIGHT_TEXTURE =
             Identifier.fromNamespaceAndPath(
                     "offlineskins-reloaded",
-                    "mainTitleScreenButtonHighlighting.png"
+                    "maintitlescreenbuttonhighlighting.png"
             );
 
     protected PauseScreenMixin(Component title) {
@@ -46,7 +46,7 @@ public abstract class PauseScreenMixin extends Screen {
                 new ConfigButton(
                         x,
                         y,
-                        button -> this.minecraft.setScreenAndShow(
+                        button -> this.minecraft.setScreen(
                                 YaclSettings.createConfigScreen(this)
                         )
                 )
@@ -68,8 +68,8 @@ public abstract class PauseScreenMixin extends Screen {
         }
 
         @Override
-        protected void extractContents(
-                GuiGraphicsExtractor graphics,
+        protected void renderContents(
+                GuiGraphics graphics,
                 int mouseX,
                 int mouseY,
                 float partialTick

@@ -20,13 +20,13 @@ public abstract class SkullBlockRendererMixin {
     private static RenderType offlineSkinsResolveSkullRenderType(
             RenderType original,
             SkullBlock.Type type,
-            SkullBlockEntity entity
+            SkullBlockEntity blockEntity
     ) {
         if (type != SkullBlock.Types.PLAYER) {
             return original;
         }
 
-        ResolvableProfile resolvableProfile = entity.getOwnerProfile();
+        ResolvableProfile resolvableProfile = blockEntity.getOwnerProfile();
 
         if (resolvableProfile == null) {
             return original;
